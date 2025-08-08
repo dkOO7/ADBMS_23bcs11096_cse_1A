@@ -1,0 +1,33 @@
+CREATE TABLE TBL_AUTHOR (
+    AUTHOR_ID INT PRIMARY KEY,
+    AUTHOR_NAME VARCHAR(30)
+);
+
+CREATE TABLE TBL_BOOK (
+    BOOK_ID INT PRIMARY KEY,
+    BOOK_TITLE VARCHAR(50),
+    AUTHOR_ID INT,
+    FOREIGN KEY (AUTHOR_ID) REFERENCES TBL_AUTHOR(AUTHOR_ID)
+);
+
+INSERT INTO TBL_AUTHOR (AUTHOR_ID, AUTHOR_NAME) VALUES
+(1, 'C.J. Date'),
+(2, 'Silberschatz'),
+(3, 'A. Tanenbaum');
+
+INSERT INTO TBL_BOOK (BOOK_ID, BOOK_TITLE, AUTHOR_ID) VALUES
+(101, 'Database Systems', 1),
+(102, 'Operating Systems', 2),
+(103, 'Computer Networks', 3),
+(104, 'Advanced Databases', 1),
+(105, 'Modern OS', 2);
+
+SELECT
+    book.BOOK_TITLE AS Title,
+    author.AUTHOR_NAME AS Author
+FROM
+    TBL_BOOK AS book
+INNER JOIN
+    TBL_AUTHOR AS author ON book.AUTHOR_ID = author.AUTHOR_ID
+ORDER BY
+    Author, Title;
