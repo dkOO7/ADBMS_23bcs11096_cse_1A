@@ -1,57 +1,57 @@
-CREATE TABLE Departments (
-    department_id INT PRIMARY KEY,
-    department_name VARCHAR(100) NOT NULL
+CREATE TABLE University_Branches (
+    branch_code INT PRIMARY KEY,
+    branch_title VARCHAR(100) NOT NULL
 );
 
-CREATE TABLE Courses (
-    course_id INT PRIMARY KEY,
-    course_name VARCHAR(100) NOT NULL,
-    department_id INT,
-    FOREIGN KEY (department_id) REFERENCES Departments(department_id)
+CREATE TABLE Class_Listings (
+    class_id INT PRIMARY KEY,
+    class_subject VARCHAR(100) NOT NULL,
+    branch_code INT,
+    FOREIGN KEY (branch_code) REFERENCES University_Branches(branch_code)
 );
 
-INSERT INTO Departments (department_id, department_name) VALUES
-(1, 'Computer Science'),
-(2, 'Mechanical Engineering'),
-(3, 'Electrical Engineering'),
-(4, 'Civil Engineering'),
-(5, 'Mathematics');
+INSERT INTO University_Branches (branch_code, branch_title) VALUES
+(10, 'Computer Science'),
+(20, 'Mechanical Engineering'),
+(30, 'Electrical Engineering'),
+(40, 'Civil Engineering'),
+(50, 'Mathematics');
 
-INSERT INTO Courses (course_id, course_name, department_id) VALUES
-(101, 'Data Structures', 1),
-(102, 'Operating Systems', 1),
-(103, 'Machine Learning', 1),
-(104, 'Thermodynamics', 2),
-(105, 'Fluid Mechanics', 2),
-(106, 'Circuits and Systems', 3),
-(107, 'Control Systems', 3),
-(108, 'Structural Analysis', 4),
-(109, 'Linear Algebra', 5),
-(110, 'Calculus', 5),
-(111, 'Probability Theory', 5);
+INSERT INTO Class_Listings (class_id, class_subject, branch_code) VALUES
+(501, 'Data Structures', 10),
+(502, 'Operating Systems', 10),
+(503, 'Machine Learning', 10),
+(504, 'Thermodynamics', 20),
+(505, 'Fluid Mechanics', 20),
+(506, 'Circuits and Systems', 30),
+(507, 'Control Systems', 30),
+(508, 'Structural Analysis', 40),
+(509, 'Linear Algebra', 50),
+(510, 'Calculus', 50),
+(511, 'Probability Theory', 50);
 
 SELECT
-    d.department_name,
-    COUNT(c.course_id) AS number_of_courses
+    branch.branch_title,
+    COUNT(listing.class_id) AS number_of_classes
 FROM
-    Departments d
+    University_Branches AS branch
 LEFT JOIN
-    Courses c ON d.department_id = c.department_id
+    Class_Listings AS listing ON branch.branch_code = listing.branch_code
 GROUP BY
-    d.department_name
+    branch.branch_title
 ORDER BY
-    d.department_name;
+    branch.branch_title;
 
 SELECT
-    d.department_name,
-    COUNT(c.course_id) AS number_of_courses
+    branch.branch_title,
+    COUNT(listing.class_id) AS class_count
 FROM
-    Departments d
+    University_Branches AS branch
 JOIN
-    Courses c ON d.department_id = c.department_id
+    Class_Listings AS listing ON branch.branch_code = listing.branch_code
 GROUP BY
-    d.department_name
+    branch.branch_title
 HAVING
-    COUNT(c.course_id) > 2
+    COUNT(listing.class_id) > 2
 ORDER BY
-    d.department_name;
+    branch.branch_title;
